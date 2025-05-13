@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>魅影密语 - 现代情趣内衣</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/DrawSVGPlugin.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #ff3e6c;
+      --secondary: #8a2be2;
+      --dark: #1a1a2e;
+      --light: #f8f8f8;
+      --accent: #ffcb77;
+    }
+    
+    body {
+      font-family: 'Noto Serif SC', serif;
+      background-color: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .section {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 0;
+    }
+    
+    .svg-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .svg-scene {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .progress-bar {
+      position: fixed;
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 50vh;
+      background: rgba(255,255,255,0.2);
+      z-index: 100;
+      border-radius: 4px;
+    }
+    
+    .progress-indicator {
+      width: 100%;
+      height: 0%;
+      background: var(--primary);
+      position: absolute;
+      bottom: 0;
+      border-radius: 4px;
+      transition: height 0.1s ease;
+    }
+    
+    .chapter-indicator {
+      position: fixed;
+      right: 3rem;
+      font-size: 0.8rem;
+      font-weight: 300;
+      opacity: 0.8;
+      z-index: 100;
+    }
+    
+    .chapter-indicator span {
+      display: block;
+      margin: 2rem 0;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    
+    .chapter-indicator span.active {
+      opacity: 1;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    /* SVG元素样式 */
+    .svg-element {
+      opacity: 0;
+    }
+    
+    .svg-line {
+      fill: none;
+      stroke: var(--light);
+      stroke-width: 2;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+    }
+    
+    .svg-shape {
+      fill: var(--primary);
+      transform-origin: center;
+      transform: scale(0);
+    }
+    
+    /* 导航样式 */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(8px);
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-link {
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 0.25rem;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* 按钮样式 */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      background: var(--primary);
+      color: var(--light);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+      z-index: -1;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="logo">魅影密语</div>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">首页</a>
+      <a href="#about" class="nav-link">品牌故事</a>
+      <a href="#features" class="nav-link">产品特色</a>
+      <a href="#collection" class="nav-link">系列展示</a>
+      <a href="#faq" class="nav-link">常见问题</a>
+    </div>
+    <button class="btn">立即购买</button>
+  </nav>
+
+  <!-- 进度条 -->
+  <div class="progress-bar">
+    <div class="progress-indicator"></div>
+  </div>
+  
+  <!-- 章节指示器 -->
+  <div class="chapter-indicator">
+    <span data-section="hero" class="active">首页</span>
+    <span data-section="about">品牌故事</span>
+    <span data-section="features">产品特色</span>
+    <span data-section="collection">系列展示</span>
+    <span data-section="faq">常见问题</span>
+  </div>
+
+  <!-- Hero区块 -->
+  <section id="hero" class="section flex items-center justify-center">
+    <div class="container mx-auto px-4 z-10">
+      <div class="flex flex-col items-center justify-center text-center">
+        <h1 class="hero-title text-5xl md:text-7xl font-bold mb-6 opacity-0">
+          <span class="block">探索</span>
+          <span class="block bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">自信与魅力</span>
+        </h1>
+        <p class="hero-subtitle text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-0">
+          释放内在的优雅与魅力，体验现代女性的自信风采
+        </p>
+        <button class="hero-btn btn opacity-0 transform scale-90">探索系列</button>
+      </div>
+    </div>
+    
+    <!-- Hero背景SVG动画 -->
+    <div class="svg-container">
+      <svg class="svg-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <!-- 背景渐变 -->
+        <defs>
+          <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1a1a2e" />
+            <stop offset="100%" stop-color="#16213e" />
+          </linearGradient>
+          
+          <!-- 流动线条遮罩 -->
+          <mask id="flow-mask">
+            <rect width="100%" height="100%" fill="white" />
+            <path class="mask-path" d="M0,400 Q300,350 600,400 T1200,400" fill="black" />
+          </mask>
+          
+          <!-- 圆点图案 -->
+          <pattern id="dots-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="4" cy="4" r="1" fill="rgba(255,255,255,0.3)" />
+          </pattern>
+          
+          <!-- 光芒效果 -->
+          <radialGradient id="spotlight" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stop-color="rgba(255,62,108,0.6)" />
+            <stop offset="100%" stop-color="rgba(255,62,108,0)" />
+          </radialGradient>
+        </defs>
+        
+        <!-- 背景 -->
+        <rect class="svg-element bg-rect" width="100%" height="100%" fill="url(#bg-gradient)" />
+        
+        <!-- 点阵背景 -->
+        <rect class="svg-element dots-bg" width="100%" height="100%" fill="url(#dots-pattern)" opacity="0.3" />
+        
+        <!-- 流动曲线群 -->
+        <g class="flow-lines">
+          <path class="svg-line flow-line-1" d="M-100,100 Q300,150 600,100 T1300,150" stroke="rgba(255,62,108,0.3)" />
+          <path class="svg-line flow-line-2" d="M-100,200 Q300,250 600,200 T1300,250" stroke="rgba(255,62,108,0.2)" />
+          <path class="svg-line flow-line-3" d="M-100,300 Q300,350 600,300 T1300,350" stroke="rgba(255,62,108,0.3)" />
+          <path class="svg-line flow-line-4" d="M-100,500 Q300,550 600,500 T1300,550" stroke="rgba(138,43,226,0.2)" />
+          <path class="svg-line flow-line-5" d="M-100,600 Q300,650 600,600 T1300,650" stroke="rgba(138,43,226,0.3)" />
+          <path class="svg-line flow-line-6" d="M-100,700 Q300,750 600,700 T1300,750" stroke="rgba(138,43,226,0.2)" />
+        </g>
+        
+        <!-- 中央光晕 -->
+        <circle class="svg-element spotlight" cx="600" cy="400" r="0" fill="url(#spotlight)" />
+        
+        <!-- 几何形状元素 -->
+        <g class="geometric-elements">
+          <path class="svg-shape geo-1" d="M500,350 L550,400 L500,450 L450,400 Z" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-shape geo-2" cx="700" cy="400" r="30" fill="#8a2be2" opacity="0" />
+          <rect class="svg-shape geo-3" x="600" y="300" width="40" height="40" fill="#ffcb77" opacity="0" />
+          <ellipse class="svg-shape geo-4" cx="500" cy="500" rx="40" ry="20" fill="#ff3e6c" opacity="0" />
+        </g>
+        
+        <!-- 线条图形装饰 -->
+        <g class="decorative-lines">
+          <path class="svg-line deco-1" d="M100,100 L200,100 L200,200" stroke="#ff3e6c" />
+          <path class="svg-line deco-2" d="M1100,100 L1000,100 L1000,200" stroke="#8a2be2" />
+          <path class="svg-line deco-3" d="M100,700 L200,700 L200,600" stroke="#8a2be2" />
+          <path class="svg-line deco-4" d="M1100,700 L1000,700 L1000,600" stroke="#ff3e6c" />
+        </g>
+        
+        <!-- 中央标题装饰线 -->
+        <g class="title-lines">
+          <path class="svg-line title-line-1" d="M450,270 L750,270" stroke="#ff3e6c" />
+          <path class="svg-line title-line-2" d="M500,530 L700,530" stroke="#8a2be2" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 品牌故事动画区块 -->
+  <section id="about" class="section">
+    <div class="svg-container">
+      <svg class="svg-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <!-- 定义渐变和蒙版 -->
+        <defs>
+          <linearGradient id="about-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#16213e" />
+            <stop offset="100%" stop-color="#1a1a2e" />
+          </linearGradient>
+          
+          <!-- 线条渐变 -->
+          <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ff3e6c" />
+            <stop offset="100%" stop-color="#8a2be2" />
+          </linearGradient>
+          
+          <!-- 剪切路径 -->
+          <clipPath id="story-clip">
+            <rect x="300" y="200" width="0" height="400" />
+          </clipPath>
+          
+          <!-- 时间线点阵 -->
+          <pattern id="timeline-dots" width="10" height="10" patternUnits="userSpaceOnUse">
+            <circle cx="5" cy="5" r="1" fill="#8a2be2" />
+          </pattern>
+        </defs>
+        
+        <!-- 背景 -->
+        <rect width="100%" height="100%" fill="url(#about-gradient)" />
+        
+        <!-- 品牌历程时间线 -->
+        <g class="timeline">
+          <line class="svg-line timeline-base" x1="200" y1="400" x2="1000" y2="400" stroke="#333" stroke-width="4" />
+          <!-- 时间节点 -->
+          <circle class="svg-element timeline-node-1" cx="300" cy="400" r="10" fill="#ff3e6c" />
+          <circle class="svg-element timeline-node-2" cx="500" cy="400" r="10" fill="#ff3e6c" />
+          <circle class="svg-element timeline-node-3" cx="700" cy="400" r="10" fill="#ff3e6c" />
+          <circle class="svg-element timeline-node-4" cx="900" cy="400" r="10" fill="#ff3e6c" />
+          
+          <!-- 年份标记 -->
+          <text class="svg-element timeline-year-1" x="300" y="440" font-size="16" fill="#f8f8f8" text-anchor="middle">2010</text>
+          <text class="svg-element timeline-year-2" x="500" y="440" font-size="16" fill="#f8f8f8" text-anchor="middle">2015</text>
+          <text class="svg-element timeline-year-3" x="700" y="440" font-size="16" fill="#f8f8f8" text-anchor="middle">2020</text>
+          <text class="svg-element timeline-year-4" x="900" y="440" font-size="16" fill="#f8f8f8" text-anchor="middle">2023</text>
+          
+          <!-- 事件描述 -->
+          <g class="svg-element timeline-event-1">
+            <line x1="300" y1="400" x2="300" y2="320" stroke="#ff3e6c" />
+            <rect x="200" y="240" width="200" height="80" rx="5" fill="rgba(255,62,108,0.1)" stroke="#ff3e6c" />
+            <text x="300" y="270" font-size="14" fill="#f8f8f8" text-anchor="middle">品牌创立</text>
+            <text x="300" y="300" font-size="12" fill="#ccc" text-anchor="middle">首家线下精品店开业</text>
+          </g>
+          
+          <g class="svg-element timeline-event-2">
+            <line x1="500" y1="400" x2="500" y2="320" stroke="#ff3e6c" />
+            <rect x="400" y="240" width="200" height="80" rx="5" fill="rgba(255,62,108,0.1)" stroke="#ff3e6c" />
+            <text x="500" y="270" font-size="14" fill="#f8f8f8" text-anchor="middle">国际化发展</text>
+            <text x="500" y="300" font-size="12" fill="#ccc" text-anchor="middle">进入欧美市场</text>
+          </g>
+          
+          <g class="svg-element timeline-event-3">
+            <line x1="700" y1="400" x2="700" y2="480" stroke="#ff3e6c" />
+            <rect x="600" y="480" width="200" height="80" rx="5" fill="rgba(255,62,108,0.1)" stroke="#ff3e6c" />
+            <text x="700" y="510" font-size="14" fill="#f8f8f8" text-anchor="middle">可持续理念</text>
+            <text x="700" y="540" font-size="12" fill="#ccc" text-anchor="middle">环保面料系列推出</text>
+          </g>
+          
+          <g class="svg-element timeline-event-4">
+            <line x1="900" y1="400" x2="900" y2="480" stroke="#ff3e6c" />
+            <rect x="800" y="480" width="200" height="80" rx="5" fill="rgba(255,62,108,0.1)" stroke="#ff3e6c" />
+            <text x="900" y="510" font-size="14" fill="#f8f8f8" text-anchor="middle">数字化创新</text>
+            <text x="900" y="540" font-size="12" fill="#ccc" text-anchor="middle">AR虚拟试衣技术</text>
+          </g>
+        </g>
+        
+        <!-- 品牌故事说明文字 -->
+        <g class="svg-element brand-story" clip-path="url(#story-clip)">
+          <text x="600" y="150" font-size="32" fill="url(#line-gradient)" text-anchor="middle">我们的品牌故事</text>
+          <text x="600" y="180" font-size="16" fill="#f8f8f8" text-anchor="middle">从创立之初，我们便致力于重新定义现代女性的自信与美丽</text>
+        </g>
+        
+        <!-- 装饰元素 -->
+        <g class="decorative-elements">
+          <circle class="svg-element deco-circle-1" cx="150" cy="150" r="50" fill="none" stroke="url(#line-gradient)" stroke-width="2" stroke-dasharray="314" stroke-dashoffset="314" />
+          <circle class="svg-element deco-circle-2" cx="1050" cy="650" r="50" fill="none" stroke="url(#line-gradient)" stroke-width="2" stroke-dasharray="314" stroke-dashoffset="314" />
+          <rect class="svg-element deco-rect" x="1050" y="150" width="80" height="80" fill="none" stroke="#ff3e6c" stroke-width="2" stroke-dasharray="320" stroke-dashoffset="320" transform="rotate(45 1090 190)" />
+          <polygon class="svg-element deco-triangle" points="150,600 200,680 100,680" fill="none" stroke="#8a2be2" stroke-width="2" stroke-dasharray="247" stroke-dashoffset="247" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 产品特色动画区块 -->
+  <section id="features" class="section">
+    <div class="svg-container">
+      <svg class="svg-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <!-- 定义渐变和滤镜 -->
+        <defs>
+          <linearGradient id="feature-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1a1a2e" />
+            <stop offset="100%" stop-color="#16213e" />
+          </linearGradient>
+          
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+          
+          <mask id="feature-mask">
+            <rect width="100%" height="100%" fill="white" />
+            <circle class="mask-circle" cx="600" cy="400" r="0" fill="black" />
+          </mask>
+          
+          <clipPath id="hexagon-clip">
+            <path d="M600,300 L675,350 L675,450 L600,500 L525,450 L525,350 Z" />
+          </clipPath>
+        </defs>
+        
+        <!-- 背景 -->
+        <rect width="100%" height="100%" fill="url(#feature-gradient)" />
+        
+        <!-- 中央特性展示 -->
+        <g class="feature-hexagon">
+          <!-- 六边形框架 -->
+          <path class="svg-line hexagon-outline" d="M600,300 L675,350 L675,450 L600,500 L525,450 L525,350 Z" fill="none" stroke="#ff3e6c" stroke-width="3" />
+          
+          <!-- 六边形内部特性图标 - 舒适性 -->
+          <g class="svg-element feature-comfort" opacity="0">
+            <circle cx="600" cy="400" r="40" fill="rgba(255,62,108,0.2)" />
+            <path d="M580,400 Q600,370 620,400 Q600,430 580,400" fill="none" stroke="#f8f8f8" stroke-width="2" />
+            <text x="600" y="460" font-size="16" fill="#f8f8f8" text-anchor="middle">舒适体验</text>
+          </g>
+          
+          <!-- 六边形内部特性图标 - 质感 -->
+          <g class="svg-element feature-quality" opacity="0">
+            <circle cx="600" cy="400" r="40" fill="rgba(138,43,226,0.2)" />
+            <path d="M580,390 L590,410 L620,380" fill="none" stroke="#f8f8f8" stroke-width="2" />
+            <text x="600" y="460" font-size="16" fill="#f8f8f8" text-anchor="middle">优质面料</text>
+          </g>
+          
+          <!-- 六边形内部特性图标 - 设计 -->
+          <g class="svg-element feature-design" opacity="0">
+            <circle cx="600" cy="400" r="40" fill="rgba(255,203,119,0.2)" />
+            <path d="M590,380 L590,420 M580,390 L600,390 M580,410 L610,410" fill="none" stroke="#f8f8f8" stroke-width="2" />
+            <text x="600" y="460" font-size="16" fill="#f8f8f8" text-anchor="middle">精致设计</text>
+          </g>
+        </g>
+        
+        <!-- 连接线 -->
+        <g class="feature-connections">
+          <!-- 左侧特性连接 -->
+          <line class="svg-line connect-left-1" x1="525" y1="350" x2="350" y2="250" stroke="#ff3e6c" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200" />
+          <line class="svg-line connect-left-2" x1="525" y1="400" x2="350" y2="400" stroke="#ff3e6c" stroke-width="2" stroke-dasharray="175" stroke-dashoffset="175" />
+          <line class="svg-line connect-left-3" x1="525" y1="450" x2="350" y2="550" stroke="#ff3e6c" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200" />
+          
+          <!-- 右侧特性连接 -->
+          <line class="svg-line connect-right-1" x1="675" y1="350" x2="850" y2="250" stroke="#8a2be2" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200" />
+          <line class="svg-line connect-right-2" x1="675" y1="400" x2="850" y2="400" stroke="#8a2be2" stroke-width="2" stroke-dasharray="175" stroke-dashoffset="175" />
+          <line class="svg-line connect-right-3" x1="675" y1="450" x2="850" y2="550" stroke="#8a2be2" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="200" />
+        </g>
+        
+        <!-- 左侧特性描述 -->
+        <g class="left-features">
+          <g class="svg-element left-feature-1">
+            <circle cx="350" cy="250" r="10" fill="#ff3e6c" />
+            <text x="320" y="250" font-size="16" fill="#f8f8f8" text-anchor="end">透气材质</text>
+            <text x="320" y="270" font-size="12" fill="#ccc" text-anchor="end">全天候舒适体验</text>
+          </g>
+          
+          <g class="svg-element left-feature-2">
+            <circle cx="350" cy="400" r="10" fill="#ff3e6c" />
+            <text x="320" y="400" font-size="16" fill="#f8f8f8" text-anchor="end">亲肤面料</text>
+            <text x="320" y="420" font-size="12" fill="#ccc" text-anchor="end">零刺激零过敏</text>
+          </g>
+          
+          <g class="svg-element left-feature-3">
+            <circle cx="350" cy="550" r="10" fill="#ff3e6c" />
+            <text x="320" y="550" font-size="16" fill="#f8f8f8" text-anchor="end">弹力支撑</text>
+            <text x="320" y="570" font-size="12" fill="#ccc" text-anchor="end">贴合身体曲线</text>
+          </g>
+        </g>
+        
+        <!-- 右侧特性描述 -->
+        <g class="right-features">
+          <g class="svg-element right-feature-1">
+            <circle cx="850" cy="250" r="10" fill="#8a2be2" />
+            <text x="880" y="250" font-size="16" fill="#f8f8f8" text-anchor="start">精致蕾丝</text>
+            <text x="880" y="270" font-size="12" fill="#ccc" text-anchor="start">法国进口工艺</text>
+          </g>
+          
+          <g class="svg-element right-feature-2">
+            <circle cx="850" cy="400" r="10" fill="#8a2be2" />
+            <text x="880" y="400" font-size="16" fill="#f8f8f8" text-anchor="start">无缝剪裁</text>
+            <text x="880" y="420" font-size="12" fill="#ccc" text-anchor="start">隐形无痕设计</text>
+          </g>
+          
+          <g class="svg-element right-feature-3">
+            <circle cx="850" cy="550" r="10" fill="#8a2be2" />
+            <text x="880" y="550" font-size="16" fill="#f8f8f8" text-anchor="start">多色可选</text>
+            <text x="880" y="570" font-size="12" fill="#ccc" text-anchor="start">满足不同场合需求</text>
+          </g>
+        </g>
+        
+        <!-- 标题 -->
+        <text class="svg-element feature-title" x="600" y="150" font-size="32" fill="#ff3e6c" text-anchor="middle" opacity="0">卓越产品特性</text>
+        <text class="svg-element feature-subtitle" x="600" y="180" font-size="16" fill="#f8f8f8" text-anchor="middle" opacity="0">每一处细节，都是为了您的舒适与自信</text>
+        
+        <!-- 装饰元素 -->
+        <g class="decorative-dots">
+          <circle class="svg-element dot-1" cx="200" cy="200" r="3" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-element dot-2" cx="240" cy="220" r="2" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-element dot-3" cx="180" cy="240" r="4" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-element dot-4" cx="1000" cy="200" r="3" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-5" cx="1040" cy="220" r="2" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-6" cx="980" cy="240" r="4" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-7" cx="200" cy="600" r="3" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-8" cx="240" cy="620" r="2" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-9" cx="180" cy="640" r="4" fill="#8a2be2" opacity="0" />
+          <circle class="svg-element dot-10" cx="1000" cy="600" r="3" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-element dot-11" cx="1040" cy="620" r="2" fill="#ff3e6c" opacity="0" />
+          <circle class="svg-element dot-12" cx="980" cy="640" r="4" fill="#ff3e6c" opacity="0" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 系列展示区块 -->
+  <section id="collection" class="section">
+    <div class="container mx-auto px-4 z-10">
+      <h2 class="collection-title text-4xl font-bold text-center mb-12 opacity-0 transform translate-y-8">精选系列</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 系列卡片1 -->
+        <div class="collection-card bg-gray-900 rounded-lg overflow-hidden opacity-0 transform translate-y-8">
+          <div class="relative h-80">
+            <img src="https://images.unsplash.com/photo-1635714260352-a35b5ee9e3fe?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=MnwxfDB8MXxyYW5kb218MHx8bGluZ2VyaWV8fHx8fHwxNjQzODk3NjIw&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=400" 
+                 alt="经典蕾丝系列" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <h3 class="text-xl font-semibold text-white">经典蕾丝系列</h3>
+              <p class="text-sm text-gray-300 mt-2">优雅与性感的完美融合</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-400 mb-4">精致蕾丝与柔软面料的结合，展现女性优雅曲线与自信魅力。</p>
+            <button class="btn w-full">探索系列</button>
+          </div>
+        </div>
+        
+        <!-- 系列卡片2 -->
+        <div class="collection-card bg-gray-900 rounded-lg overflow-hidden opacity-0 transform translate-y-8">
+          <div class="relative h-80">
+            <img src="https://images.unsplash.com/photo-1607626016717-d3273da611f5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=MnwxfDB8MXxyYW5kb218MHx8bGluZ2VyaWV8fHx8fHwxNjQzODk3NjQ1&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=400" 
+                 alt="舒适日常系列" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <h3 class="text-xl font-semibold text-white">舒适日常系列</h3>
+              <p class="text-sm text-gray-300 mt-2">日常舒适，魅力依旧</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-400 mb-4">采用天然有机棉，无缝工艺，为您提供全天候的舒适体验。</p>
+            <button class="btn w-full">探索系列</button>
+          </div>
+        </div>
+        
+        <!-- 系列卡片3 -->
+        <div class="collection-card bg-gray-900 rounded-lg overflow-hidden opacity-0 transform translate-y-8">
+          <div class="relative h-80">
+            <img src="https://images.unsplash.com/photo-1566978862346-3ff1c21d0a88?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=MnwxfDB8MXxyYW5kb218MHx8bGluZ2VyaWV8fHx8fHwxNjQzODk3NjYw&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=400" 
+                 alt="奢华丝绸系列" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <h3 class="text-xl font-semibold text-white">奢华丝绸系列</h3>
+              <p class="text-sm text-gray-300 mt-2">触感如丝，奢华体验</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-400 mb-4">精选顶级桑蚕丝，手工缝制，带来触感与视觉的双重享受。</p>
+            <button class="btn w-full">探索系列</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <button class="view-more-btn bg-transparent border-2 border-pink-500 text-pink-500 py-2 px-6 rounded-full hover:bg-pink-500 hover:text-white transition-all duration-300 opacity-0 transform translate-y-8">
+          查看更多系列
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ区块 -->
+  <section id="faq" class="section">
+    <div class="container mx-auto px-4 z-10">
+      <h2 class="faq-title text-4xl font-bold text-center mb-12 opacity-0 transform translate-y-8">常见问题</h2>
+      
+      <div class="max-w-3xl mx-auto">
+        <!-- FAQ项目 -->
+        <div class="faq-item bg-gray-900 rounded-lg p-6 mb-6 opacity-0 transform translate-y-8">
+          <div class="flex justify-between items-center cursor-pointer">
+            <h3 class="text-xl font-semibold text-white">如何选择合适的内衣尺码？</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="faq-answer mt-4 text-gray-400">
+            <p>您可以参考我们网站上的尺码指南，测量您的胸围和下胸围，并根据对照表选择合适的尺码。或者联系我们的客服团队获取更专业的尺码建议。</p>
+          </div>
+        </div>
+        
+        <div class="faq-item bg-gray-900 rounded-lg p-6 mb-6 opacity-0 transform translate-y-8">
+          <div class="flex justify-between items-center cursor-pointer">
+            <h3 class="text-xl font-semibold text-white">产品使用什么材质？</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="faq-answer mt-4 text-gray-400">
+            <p>我们的产品主要使用天然优质材料，包括有机棉、真丝、蕾丝等。所有面料均通过OEKO-TEX®认证，确保对皮肤安全无刺激。</p>
+          </div>
+        </div>
+        
+        <div class="faq-item bg-gray-900 rounded-lg p-6 mb-6 opacity-0 transform translate-y-8">
+          <div class="flex justify-between items-center cursor-pointer">
+            <h3 class="text-xl font-semibold text-white">如何正确清洗和保养内衣？</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="faq-answer mt-4 text-gray-400">
+            <p>建议使用中性洗涤剂手洗，避免使用漂白剂和柔顺剂。不建议机洗和烘干，自然平铺晾干可延长产品寿命。精致蕾丝和丝绸产品建议使用专用洗涤袋保护。</p>
+          </div>
+        </div>
+        
+        <div class="faq-item bg-gray-900 rounded-lg p-6 mb-6 opacity-0 transform translate-y-8">
+          <div class="flex justify-between items-center cursor-pointer">
+            <h3 class="text-xl font-semibold text-white">是否支持退换货？</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="faq-answer mt-4 text-gray-400">
+            <p>为了确保卫生，贴身内衣不支持退换。但如果收到的产品有质量问题或与描述不符，我们支持7天内退换。请保留原包装和吊牌，联系客服安排退换事宜。</p>
+          </div>
+        </div>
+        
+        <div class="faq-item bg-gray-900 rounded-lg p-6 mb-6 opacity-0 transform translate-y-8">
+          <div class="flex justify-between items-center cursor-pointer">
+            <h3 class="text-xl font-semibold text-white">配送时间是多久？</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="faq-answer mt-4 text-gray-400">
+            <p>国内订单通常在1-3个工作日内发货，3-5天送达。国际订单则需要7-15个工作日，具体视目的地国家而定。您可以在订单页面查询实时物流状态。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 背景动画元素 -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+      <svg class="w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="glow1" cx="20%" cy="30%" r="50%" fx="20%" fy="30%">
+            <stop offset="0%" stop-color="rgba(255,62,108,0.3)" />
+            <stop offset="100%" stop-color="rgba(255,62,108,0)" />
+          </radialGradient>
+          <radialGradient id="glow2" cx="80%" cy="70%" r="50%" fx="80%" fy="70%">
+            <stop offset="0%" stop-color="rgba(138,43,226,0.3)" />
+            <stop offset="100%" stop-color="rgba(138,43,226,0)" />
+          </radialGradient>
+        </defs>
+        
+        <!-- 背景光晕 -->
+        <circle class="faq-glow-1" cx="240" cy="240" r="200" fill="url(#glow1)" opacity="0" />
+        <circle class="faq-glow-2" cx="960" cy="560" r="200" fill="url(#glow2)" opacity="0" />
+        
+        <!-- 装饰线条 -->
+        <path class="faq-line-1 svg-line" d="M100,100 L200,100 L200,200" stroke="#ff3e6c" opacity="0" />
+        <path class="faq-line-2 svg-line" d="M1100,100 L1000,100 L1000,200" stroke="#8a2be2" opacity="0" />
+        <path class="faq-line-3 svg-line" d="M100,700 L200,700 L200,600" stroke="#8a2be2" opacity="0" />
+        <path class="faq-line-4 svg-line" d="M1100,700 L1000,700 L1000,600" stroke="#ff3e6c" opacity="0" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- 页脚部分 -->
+  <footer class="bg-gray-900 py-12 relative overflow-hidden">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- 品牌信息 -->
+        <div class="footer-content opacity-0 transform translate-y-8">
+          <div class="logo text-2xl font-bold mb-4">魅影密语</div>
+          <p class="text-gray-400 mb-4">为现代女性打造的高品质情趣内衣，让每一天都充满自信与魅力。</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 快速链接 -->
+        <div class="footer-content opacity-0 transform translate-y-8">
+          <h3 class="text-white text-lg font-semibold mb-4">快速链接</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">关于我们</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">产品系列</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">新品上市</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">品牌故事</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">联系我们</a></li>
+          </ul>
+        </div>
+        
+        <!-- 帮助中心 -->
+        <div class="footer-content opacity-0 transform translate-y-8">
+          <h3 class="text-white text-lg font-semibold mb-4">帮助中心</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">尺码指南</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">配送政策</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">退换政策</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">支付方式</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">常见问题</a></li>
+          </ul>
+        </div>
+        
+        <!-- 订阅信息 -->
+        <div class="footer-content opacity-0 transform translate-y-8">
+          <h3 class="text-white text-lg font-semibold mb-4">订阅我们</h3>
+          <p class="text-gray-400 mb-4">订阅我们的电子邮件，获取最新产品和促销信息。</p>
+          <form class="flex">
+            <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 w-full bg-gray-800 border border-gray-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-300">
+            <button type="submit" class="bg-pink-500 hover:bg-pink-600 transition-colors text-white px-4 py-2 rounded-r-md">订阅</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+        <p class="text-gray-500 footer-content opacity-0 transform translate-y-8">&copy; 2023 魅影密语。保留所有权利。</p>
+      </div>
+    </div>
+    
+    <!-- 页脚装饰元素 -->
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <path class="footer-wave" fill="#ff3e6c" opacity="0.05" d="M0,40 C300,100 900,0 1200,40 L1200,100 L0,100 Z"></path>
+      <path class="footer-wave" fill="#8a2be2" opacity="0.05" d="M0,60 C300,0 900,100 1200,60 L1200,100 L0,100 Z" style="animation-delay: 0.5s;"></path>
+    </svg>
+  </footer>
+
+  <!-- JavaScript部分 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 注册插件
+      gsap.registerPlugin(ScrollTrigger);
+      
+      // 初始化进度条与章节指示器
+      initProgressBar();
+      initChapterIndicator();
+      
+      // 初始化动画序列
+      initHeroAnimation();
+      initAboutAnimation();
+      initFeaturesAnimation();
+      initCollectionAnimation();
+      initFaqAnimation();
+      initFooterAnimation();
+      
+      // 响应式匹配设置
+      setupResponsiveAnimations();
+      
+      // FAQ交互
+      setupFaqInteraction();
+    });
+    
+    // 进度条初始化
+    function initProgressBar() {
+      const progressIndicator = document.querySelector('.progress-indicator');
+      
+      ScrollTrigger.create({
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        onUpdate: (self) => {
+          progressIndicator.style.height = `${self.progress * 100}%`;
+        }
+      });
+    }
+    
+    // 章节指示器初始化
+    function initChapterIndicator() {
+      const sections = ['hero', 'about', 'features', 'collection', 'faq'];
+      const indicators = document.querySelectorAll('.chapter-indicator span');
+      
+      sections.forEach(section => {
+        ScrollTrigger.create({
+          trigger: `#${section}`,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () => updateActiveIndicator(section),
+          onEnterBack: () => updateActiveIndicator(section)
+        });
+      });
+      
+      function updateActiveIndicator(sectionId) {
+        indicators.forEach(indicator => {
+          if (indicator.getAttribute('data-section') === sectionId) {
+            indicator.classList.add('active');
+          } else {
+            indicator.classList.remove('active');
+          }
+        });
+      }
+    }
+    
+    // Hero区块动画
+    function initHeroAnimation() {
+      // 创建主时间线
+      const heroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+          pin: true,
+          pinSpacing: true
+        }
+      });
+      
+      // 初始元素动画
+      gsap.set('.hero-title, .hero-subtitle, .hero-btn', { opacity: 0, y: 50 });
+      gsap.set('.svg-line', { strokeDasharray: '1000', strokeDashoffset: '1000' });
+      gsap.set('.spotlight', { scale: 0, opacity: 0 });
+      gsap.set('.geo-1, .geo-2, .geo-3, .geo-4', { scale: 0, opacity: 0 });
+      
+      // 添加到时间线
+      heroTl
+        // 背景元素显示
+        .to('.bg-rect', { opacity: 1, duration: 1 }, 0)
+        .to('.dots-bg', { opacity: 0.3, duration: 1.5 }, 0.3)
+        
+        // 装饰线条绘制
+        .to('.deco-1', { strokeDashoffset: 0, duration: 2 }, 0.5)
+        .to('.deco-2', { strokeDashoffset: 0, duration: 2 }, 0.7)
+        .to('.deco-3', { strokeDashoffset: 0, duration: 2 }, 0.9)
+        .to('.deco-4', { strokeDashoffset: 0, duration: 2 }, 1.1)
+        
+        // 流动曲线动画
+        .to('.flow-line-1', { strokeDashoffset: 0, duration: 2 }, 1)
+        .to('.flow-line-2', { strokeDashoffset: 0, duration: 2 }, 1.2)
+        .to('.flow-line-3', { strokeDashoffset: 0, duration: 2 }, 1.4)
+        .to('.flow-line-4', { strokeDashoffset: 0, duration: 2 }, 1.6)
+        .to('.flow-line-5', { strokeDashoffset: 0, duration: 2 }, 1.8)
+        .to('.flow-line-6', { strokeDashoffset: 0, duration: 2 }, 2)
+        
+        // 中央光晕与几何形状
+        .to('.spotlight', { scale: 1, opacity: 0.8, duration: 2.5 }, 2)
+        .to('.geo-1', { scale: 1, opacity: 1, rotation: 360, duration: 1.5 }, 2.5)
+        .to('.geo-2', { scale: 1, opacity: 1, duration: 1.5 }, 2.7)
+        .to('.geo-3', { scale: 1, opacity: 1, rotation: 45, duration: 1.5 }, 2.9)
+        .to('.geo-4', { scale: 1, opacity: 1, duration: 1.5 }, 3.1)
+        
+        // 标题装饰线
+        .to('.title-line-1', { strokeDashoffset: 0, duration: 1.5 }, 3.5)
+        .to('.title-line-2', { strokeDashoffset: 0, duration: 1.5 }, 3.7);
+      
+      // 文本内容动画（独立于滚动）
+      gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.5 });
+      gsap.to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, delay: 0.8 });
+      gsap.to('.hero-btn', { opacity: 1, y: 0, scale: 1, duration: 1, delay: 1.1 });
+    }
+    
+    // 品牌故事动画
+    function initAboutAnimation() {
+      const aboutTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#about',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+          pin: true,
+          pinSpacing: true
+        }
+      });
+      
+      // 初始设置
+      gsap.set('.timeline-node-1, .timeline-node-2, .timeline-node-3, .timeline-node-4', { scale: 0 });
+      gsap.set('.timeline-year-1, .timeline-year-2, .timeline-year-3, .timeline-year-4', { opacity: 0 });
+      gsap.set('.timeline-event-1, .timeline-event-2, .timeline-event-3, .timeline-event-4', { opacity: 0, y: 20 });
+      gsap.set('.deco-circle-1, .deco-circle-2', { strokeDashoffset: 314 });
+      gsap.set('.deco-rect', { strokeDashoffset: 320 });
+      gsap.set('.deco-triangle', { strokeDashoffset: 247 });
+      
+      // 时间线动画
+      aboutTl
+        // 基础时间线
+        .to('.timeline-base', { strokeDashoffset: 0, duration: 2 }, 0)
+        
+        // 逐步显示时间节点
+        .to('.timeline-node-1', { scale: 1, duration: 1 }, 1)
+        .to('.timeline-year-1', { opacity: 1, duration: 0.5 }, 1.2)
+        .to('.timeline-event-1', { opacity: 1, y: 0, duration: 1 }, 1.5)
+        
+        .to('.timeline-node-2', { scale: 1, duration: 1 }, 2)
+        .to('.timeline-year-2', { opacity: 1, duration: 0.5 }, 2.2)
+        .to('.timeline-event-2', { opacity: 1, y: 0, duration: 1 }, 2.5)
+        
+        .to('.timeline-node-3', { scale: 1, duration: 1 }, 3)
+        .to('.timeline-year-3', { opacity: 1, duration: 0.5 }, 3.2)
+        .to('.timeline-event-3', { opacity: 1, y: 0, duration: 1 }, 3.5)
+        
+        .to('.timeline-node-4', { scale: 1, duration: 1 }, 4)
+        .to('.timeline-year-4', { opacity: 1, duration: 0.5 }, 4.2)
+        .to('.timeline-event-4', { opacity: 1, y: 0, duration: 1 }, 4.5)
+        
+        // 剪切路径动画
+        .to('[clip-path="url(#story-clip)"] rect', { width: 600, duration: 3 }, 1)
+        
+        // 装饰元素动画
+        .to('.deco-circle-1', { strokeDashoffset: 0, duration: 2 }, 5)
+        .to('.deco-circle-2', { strokeDashoffset: 0, duration: 2 }, 5.2)
+        .to('.deco-rect', { strokeDashoffset: 0, duration: 2 }, 5.4)
+        .to('.deco-triangle', { strokeDashoffset: 0, duration: 2 }, 5.6);
+    }
+    
+    // 产品特性动画
+    function initFeaturesAnimation() {
+      const featuresTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#features',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+          pin: true,
+          pinSpacing: true
+        }
+      });
+      
+      // 初始设置
+      gsap.set('.hexagon-outline', { strokeDasharray: '1000', strokeDashoffset: '1000' });
+      gsap.set('.feature-comfort, .feature-quality, .feature-design', { opacity: 0 });
+      gsap.set('.connect-left-1, .connect-left-2, .connect-left-3', { strokeDashoffset: '200' });
+      gsap.set('.connect-right-1, .connect-right-2, .connect-right-3', { strokeDashoffset: '200' });
+      gsap.set('.left-feature-1, .left-feature-2, .left-feature-3', { opacity: 0, x: -50 });
+      gsap.set('.right-feature-1, .right-feature-2, .right-feature-3', { opacity: 0, x: 50 });
+      gsap.set('.feature-title, .feature-subtitle', { opacity: 0, y: 30 });
+      gsap.set('.dot-1, .dot-2, .dot-3, .dot-4, .dot-5, .dot-6, .dot-7, .dot-8, .dot-9, .dot-10, .dot-11, .dot-12', { opacity: 0 });
+      
+      // 动画序列
+      featuresTl
+        // 标题动画
+        .to('.feature-title', { opacity: 1, y: 0, duration: 1 }, 0)
+        .to('.feature-subtitle', { opacity: 1, y: 0, duration: 1 }, 0.3)
+        
+        // 六边形动画
+        .to('.hexagon-outline', { strokeDashoffset: 0, duration: 2 }, 1)
+        
+        // 特性内容动画
+        .to('.feature-comfort', { opacity: 1, duration: 1 }, 3)
+        .to('.feature-comfort', { opacity: 0, duration: 0.5 }, 5)
+        .to('.feature-quality', { opacity: 1, duration: 1 }, 5.5)
+        .to('.feature-quality', { opacity: 0, duration: 0.5 }, 7.5)
+        .to('.feature-design', { opacity: 1, duration: 1 }, 8)
+        
+        // 连接线动画
+        .to('.connect-left-1', { strokeDashoffset: 0, duration: 1 }, 3.5)
+        .to('.left-feature-1', { opacity: 1, x: 0, duration: 1 }, 4)
+        
+        .to('.connect-left-2', { strokeDashoffset: 0, duration: 1 }, 6)
+        .to('.left-feature-2', { opacity: 1, x: 0, duration: 1 }, 6.5)
+        
+        .to('.connect-left-3', { strokeDashoffset: 0, duration: 1 }, 8.5)
+        .to('.left-feature-3', { opacity: 1, x: 0, duration: 1 }, 9)
+        
+        .to('.connect-right-1', { strokeDashoffset: 0, duration: 1 }, 3.5)
+        .to('.right-feature-1', { opacity: 1, x: 0, duration: 1 }, 4)
+        
+        .to('.connect-right-2', { strokeDashoffset: 0, duration: 1 }, 6)
+        .to('.right-feature-2', { opacity: 1, x: 0, duration: 1 }, 6.5)
+        
+        .to('.connect-right-3', { strokeDashoffset: 0, duration: 1 }, 8.5)
+        .to('.right-feature-3', { opacity: 1, x: 0, duration: 1 }, 9)
+        
+        // 装饰元素动画
+        .to('.dot-1, .dot-2, .dot-3, .dot-4, .dot-5, .dot-6', { opacity: 0.8, stagger: 0.1, duration: 0.5 }, 2)
+        .to('.dot-7, .dot-8, .dot-9, .dot-10, .dot-11, .dot-12', { opacity: 0.8, stagger: 0.1, duration: 0.5 }, 7);
+    }
+    
+    // 系列展示动画
+    function initCollectionAnimation() {
+      // 常规滚动动画，无需固定
+      const collectionTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#collection',
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+      
+      collectionTl
+        .to('.collection-title', { opacity: 1, y: 0, duration: 0.8 })
+        .to('.collection-card', { opacity: 1, y: 0, stagger: 0.2, duration: 0.8 }, '-=0.4')
+        .to('.view-more-btn', { opacity: 1, y: 0, duration: 0.8 }, '-=0.2');
+    }
+    
+    // FAQ动画
+    function initFaqAnimation() {
+      // 常规滚动动画，无需固定
+      const faqTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#faq',
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+      
+      // 背景动画元素
+      gsap.to('.faq-glow-1', { 
+        opacity: 0.6, 
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        scrollTrigger: {
+          trigger: '#faq',
+          start: 'top bottom',
+          toggleActions: 'play pause resume reset'
+        }
+      });
+      
+      gsap.to('.faq-glow-2', { 
+        opacity: 0.6, 
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: 1,
+        scrollTrigger: {
+          trigger: '#faq',
+          start: 'top bottom',
+          toggleActions: 'play pause resume reset'
+        }
+      });
+      
+      // 装饰线条
+      gsap.to('.faq-line-1, .faq-line-2, .faq-line-3, .faq-line-4', { 
+        opacity: 1, 
+        strokeDashoffset: 0,
+        duration: 1.5,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: '#faq',
+          start: 'top 80%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+      
+      // FAQ文本内容
+      faqTl
+        .to('.faq-title', { opacity: 1, y: 0, duration: 0.8 })
+        .to('.faq-item', { opacity: 1, y: 0, stagger: 0.15, duration: 0.8 }, '-=0.4');
+    }
+    
+    // 页脚动画
+    function initFooterAnimation() {
+      gsap.to('.footer-content', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: 'footer',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+      
+      gsap.to('.footer-wave', {
+        opacity: 0.1,
+        duration: 1.5,
+        scrollTrigger: {
+          trigger: 'footer',
+          start: 'top bottom',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
+    
+    // 响应式动画设置
+    function setupResponsiveAnimations() {
+      ScrollTrigger.matchMedia({
+        // 桌面端
+        "(min-width: 1024px)": function() {
+          // 保持默认动画配置
+        },
+        
+        // 平板端
+        "(min-width: 768px) and (max-width: 1023px)": function() {
+          // 简化动画节奏
+          ScrollTrigger.getAll().forEach(trigger => {
+            if (trigger.vars.scrub) {
+              trigger.kill(true);
+              
+              // 重新创建带有更短持续时间的触发器
+              ScrollTrigger.create({
+                ...trigger.vars,
+                scrub: 0.5, // 更快的滚动响应
+                pin: trigger.vars.pin, // 保持固定状态
+                pinSpacing: trigger.vars.pinSpacing
+              });
+            }
+          });
+        },
+        
+        // 移动端
+        "(max-width: 767px)": function() {
+          // 大幅简化动画，提高性能
+          ScrollTrigger.getAll().forEach(trigger => {
+            // 保留固定效果但简化动画
+            if (trigger.vars.pin) {
+              trigger.kill(true);
+              
+              // 为移动端创建更简单的动画
+              ScrollTrigger.create({
+                trigger: trigger.vars.trigger,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: false, // 关闭滚动绑定
+                pin: true,
+                pinSpacing: true,
+                onEnter: function() {
+                  // 对入场时执行简单动画
+                  const targetSection = document.querySelector(trigger.vars.trigger);
+                  gsap.to(targetSection.querySelectorAll('.svg-element'), {
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.05
+                  });
+                  
+                  gsap.to(targetSection.querySelectorAll('.svg-line'), {
+                    strokeDashoffset: 0,
+                    duration: 0.8,
+                    stagger: 0.05
+                  });
+                }
+              });
+            }
+          });
+          
+          // 调整导航栏样式
+          gsap.set('.nav-links', { display: 'none' }); // 隐藏导航链接
+          
+          // 添加汉堡菜单按钮
+          const navbar = document.querySelector('.navbar');
+          const menuBtn = document.createElement('div');
+          menuBtn.className = 'menu-btn';
+          menuBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          `;
+          navbar.insertBefore(menuBtn, navbar.querySelector('.btn'));
+        }
+      });
+    }
+    
+    // FAQ交互功能
+    function setupFaqInteraction() {
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('div:first-child');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question.querySelector('svg');
+        
+        // 默认隐藏答案
+        gsap.set(answer, { height: 0, overflow: 'hidden', opacity: 0 });
+        
+        question.addEventListener('click', () => {
+          // 切换当前FAQ项目
+          if (answer.style.height === '0px' || answer.style.height === '') {
+            // 展开当前答案
+            gsap.to(answer, { height: 'auto', opacity: 1, duration: 0.3 });
+            gsap.to(icon, { rotation: 180, duration: 0.3 });
+          } else {
+            // 关闭当前答案
+            gsap.to(answer, { height: 0, opacity: 0, duration: 0.3 });
+            gsap.to(icon, { rotation: 0, duration: 0.3 });
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html> 
